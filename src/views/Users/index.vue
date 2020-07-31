@@ -6,7 +6,13 @@
           <v-col cols="3">
             <v-card style="margin-top:12px">
               <v-card-text>
-                <v-text-field label="Cari Nama Ruangan..." solo v-model="nama_ruangan" rounded />
+                <v-text-field
+                  label="Cari Nama Ruangan..."
+                  solo
+                  v-model="nama_ruangan"
+                  rounded
+                  prepend-inner-icon="search"
+                />
                 <div v-for="list in genre" :key="list">
                   <v-checkbox v-model="showDialog" class="mx-2" :label="list" :value="list"></v-checkbox>
                 </div>
