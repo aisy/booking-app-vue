@@ -69,7 +69,7 @@
 
     <!-- Content -->
     <v-main>
-      <v-container fluid>
+      <v-container>
         <v-row justify="center" align="center">
           <v-col>
             <router-view />
