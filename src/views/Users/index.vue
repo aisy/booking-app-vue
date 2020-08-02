@@ -1,78 +1,74 @@
 <template>
-  <div class="home">
-    <v-layout>
-      <v-container>
+  <v-container>
+    <v-row>
+      <v-col cols="3">
+        <v-card style="margin-top:12px">
+          <v-card-text>
+            <v-text-field
+              label="Cari Nama Ruangan..."
+              solo
+              v-model="nama_ruangan"
+              rounded
+              prepend-inner-icon="search"
+            />
+            <div v-for="list in genre" :key="list">
+              <v-checkbox v-model="showDialog" class="mx-2" :label="list" :value="list"></v-checkbox>
+            </div>
+            <v-btn color="primary" @click="SearchOnClick()">Cari</v-btn>
+          </v-card-text>
+        </v-card>
+      </v-col>
+
+      <!-- modal -->
+      <v-dialog v-model="showDialog" max-width="600">
+        <v-card>
+          <v-card-title class="headline">Apakah anda akan membooking {{dataDialog.title}}?</v-card-title>
+          <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" text @click="showDialog = false">Batalkan</v-btn>
+            <v-btn color="green darken-1" dark @click="showDialog = false">Booking</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <!-- Loading -->
+      <v-col cols="9" v-if="loading">
         <v-row>
-          <v-col cols="3">
-            <v-card style="margin-top:12px">
+          <v-col cols="4" v-for="n in 4" :key="n">
+            <v-card>
+              <v-skeleton-loader type="image" :loading="true" height="200" />
               <v-card-text>
-                <v-text-field
-                  label="Cari Nama Ruangan..."
-                  solo
-                  v-model="nama_ruangan"
-                  rounded
-                  prepend-inner-icon="search"
-                />
-                <div v-for="list in genre" :key="list">
-                  <v-checkbox v-model="showDialog" class="mx-2" :label="list" :value="list"></v-checkbox>
-                </div>
-                <v-btn color="primary" @click="SearchOnClick()">Cari</v-btn>
+                <v-skeleton-loader :loading="true" height="94" type="list-item-two-line" />
+                <v-skeleton-loader type="button" />
               </v-card-text>
             </v-card>
           </v-col>
+        </v-row>
+      </v-col>
 
-          <!-- modal -->
-          <v-dialog v-model="showDialog" max-width="600">
+      <v-col cols="9" v-if="!loading">
+        <v-row>
+          <v-col cols="4" v-for="list in dataFilter" :key="list.title">
             <v-card>
-              <v-card-title class="headline">Apakah anda akan membooking {{dataDialog.title}}?</v-card-title>
-              <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="green darken-1" text @click="showDialog = false">Batalkan</v-btn>
-                <v-btn color="green darken-1" dark @click="showDialog = false">Booking</v-btn>
-              </v-card-actions>
+              <v-img
+                class="white--text align-end"
+                height="200px"
+                src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+              >
+                <v-card-title>{{list.title}}</v-card-title>
+              </v-img>
+              <v-card-text>
+                <p>{{list.title}}</p>
+                <p>{{list.releaseYear}}</p>
+                <v-btn color="success" @click="bookingProgress(list)">Booking</v-btn>
+              </v-card-text>
             </v-card>
-          </v-dialog>
-
-          <!-- Loading -->
-          <v-col cols="9" v-if="loading">
-            <v-row>
-              <v-col cols="4" v-for="n in 4" :key="n">
-                <v-card>
-                  <v-skeleton-loader type="image" :loading="true" height="200" />
-                  <v-card-text>
-                    <v-skeleton-loader :loading="true" height="94" type="list-item-two-line" />
-                    <v-skeleton-loader type="button" />
-                  </v-card-text>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-col>
-
-          <v-col cols="9" v-if="!loading">
-            <v-row>
-              <v-col cols="4" v-for="list in dataFilter" :key="list.title">
-                <v-card>
-                  <v-img
-                    class="white--text align-end"
-                    height="200px"
-                    src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-                  >
-                    <v-card-title>{{list.title}}</v-card-title>
-                  </v-img>
-                  <v-card-text>
-                    <p>{{list.title}}</p>
-                    <p>{{list.releaseYear}}</p>
-                    <v-btn color="success" @click="bookingProgress(list)">Booking</v-btn>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-            </v-row>
           </v-col>
         </v-row>
-      </v-container>
-    </v-layout>
-  </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
