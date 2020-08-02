@@ -16,6 +16,14 @@ const routes = [
       {
         path: "",
         component: () => import('../views/Admin/index.vue')
+      },
+      {
+        path: "bookings",
+        component: () => import('../views/Admin/Booking/index.vue')
+      },
+      {
+        path: "rooms",
+        component: () => import('../views/Admin/Rooms/index.vue')
       }
     ]
   },
